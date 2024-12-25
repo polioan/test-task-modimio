@@ -1,0 +1,49 @@
+version: '3'
+
+name: 'modimio'
+
+services:
+  modimio-cache:
+    container_name: 'modimio-cache'
+    image: 'redis:7.4'
+    volumes:
+      - 'cache-data:/data'
+    ports:
+      - '6379:6379'
+    networks:
+      - 'main'
+    restart: 'always'
+    user: 'redis'
+    healthcheck:
+      test: ['CMD-SHELL', 'redis-cli ping | grep PONG']
+      interval: '1s'
+      timeout: '3s'
+      retries: '5'
+
+  modimio-database:
+    container_name: 'modimio-database'
+    image: 'postgres:16'
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'password'
+      POSTGRES_DB: 'db'
+    ports:
+      - '5432:5432'
+    volumes:
+      - 'database-data:/var/lib/postgresql/data'
+    networks:
+      - 'main'
+    restart: 'always'
+    user: 'postgres'
+    healthcheck:
+      test: ['CMD', 'pg_isready']
+      interval: '10s'
+      timeout: '5s'
+      retries: '5'
+
+networks:
+  main:
+
+volumes:
+  cache-data:
+  database-data:

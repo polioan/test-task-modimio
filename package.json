@@ -1,0 +1,59 @@
+{
+  "name": "test-task-modimio",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=20.12.2"
+  },
+  "engineStrict": true,
+  "scripts": {
+    "prebuild": "rimraf ./dist",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "cross-env NODE_ENV=production node dist/main",
+    "build:start": "npm run build && npm run start",
+    "test:types": "tsc --noEmit",
+    "test": "npm run test:types",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint . --ext .ts,.js,.cts,.cjs,.mjs,.jsx,.tsx",
+    "lint:jsx": "eslint . --ext .jsx,.tsx",
+    "lint:fix": "eslint . --ext .ts,.js,.cts,.cjs,.mjs,.jsx,.tsx --fix",
+    "knip": "knip",
+    "depcheck": "depcheck",
+    "compose": "docker-compose -f compose.dev.yml up -d --build --wait"
+  },
+  "dependencies": {
+    "cross-env": "^7.0.3",
+    "reflect-metadata": "^0.2.2",
+    "typed-html": "^3.0.1"
+  },
+  "devDependencies": {
+    "@types/eslint": "^8.56.10",
+    "@types/node": "^20.17.10",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "@typescript/analyze-trace": "^0.10.1",
+    "concurrently": "^9.1.0",
+    "copyfiles": "^2.4.1",
+    "depcheck": "^1.4.7",
+    "eslint": "^8.57.0",
+    "eslint-config-polioan": "^1.8.4",
+    "eslint-plugin-css-modules": "^2.12.0",
+    "eslint-plugin-jsdoc": "^46.10.1",
+    "eslint-plugin-jsx-a11y": "^6.10.0",
+    "eslint-plugin-react": "^7.36.1",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-security": "^1.7.1",
+    "eslint-plugin-typescript-enum": "^2.1.0",
+    "eslint-plugin-unicorn": "^48.0.1",
+    "eslint-plugin-validate-jsx-nesting": "^0.1.1",
+    "knip": "^5.41.1",
+    "nodemon": "^3.1.9",
+    "prettier": "^3.3.3",
+    "prettier-plugin-jsdoc": "^1.3.0",
+    "rimraf": "^6.0.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
