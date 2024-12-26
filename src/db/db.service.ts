@@ -132,4 +132,22 @@ export class DbService {
     })
     return user
   }
+
+  public async getUsers({
+    sortBy,
+    page,
+  }: {
+    sortBy: 'email' | 'login'
+    page: number
+  }) {
+    const pageSize = 10
+    const users = await this.db.query.users.findMany({
+      orderBy(users, { asc }) {
+        return sortBy === 'email' ? asc(users.email) : asc(users.login)
+      },
+      limit: pageSize,
+      offset: (page - 1) * pageSize,
+    })
+    return users
+  }
 }

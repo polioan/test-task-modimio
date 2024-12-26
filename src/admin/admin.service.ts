@@ -1,5 +1,5 @@
 import { injectable, inject } from 'inversify'
-import type { Login } from './admin.schema.js'
+import type { Login, GetUsers } from './admin.schema.js'
 import type * as schema from '../db/db.schema.js'
 import { types } from '../di/dependency-types.js'
 import type { IAuth } from '../auth/auth.interface.js'
@@ -69,6 +69,15 @@ export class AdminService {
     return {
       accessToken,
       refreshToken,
+    }
+  }
+
+  public async users({ page, sortBy }: GetUsers) {
+    const users = await this.dbService.getUsers({ page, sortBy })
+    return {
+      users: users.map(({ password: _, ...user }) => {
+        return user
+      }),
     }
   }
 }

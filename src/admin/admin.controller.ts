@@ -3,7 +3,7 @@ import type { IRegistrable } from '../types/registrable.js'
 import type { Controller } from '../server/server.interface.js'
 import { AdminService } from './admin.service.js'
 import { AdminMiddleware } from './admin.middleware.js'
-import { loginSchema } from './admin.schema.js'
+import { loginSchema, getUsersSchema, usersSchema } from './admin.schema.js'
 import { tokensSchema } from '../auth/auth.schema.js'
 import { status } from '@polioan/http-status'
 import { z } from 'zod'
@@ -74,6 +74,30 @@ export class AdminController implements IRegistrable<Controller> {
           await reply
             .status(status.OK)
             .send(await this.adminService.refresh(request.body.refresh))
+        }
+      )
+
+      server.get(
+        '/admin/users',
+        {
+          preHandler: [await this.adminMiddleware.register()],
+          schema: {
+            querystring: getUsersSchema,
+            tags: ['admin'],
+            security: [
+              {
+                adminAuth: [],
+              },
+            ],
+            response: {
+              [status.OK]: usersSchema,
+            },
+          },
+        },
+        async (request, reply) => {
+          await reply
+            .status(status.OK)
+            .send(await this.adminService.users(request.query))
         }
       )
     }
